@@ -1,0 +1,6 @@
+name: Craftory Calculate
+version: ${project.version}
+main: studio.craftory.craftorycalculate.CraftoryCalculate
+api-version: 1.16
+authors: [MatthewJones]
+website: https://craftory.studio/
