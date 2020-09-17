@@ -1,6 +1,7 @@
 package studio.craftory.craftorycalculate.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,8 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
     tabs.put("calc", new Command_Calc());
     commands.put("save", new Command_Save());
     tabs.put("save", new Command_Save());
+    commands.put("centre", new Command_Centre());
+    tabs.put("centre", new Command_Centre());
   }
 
   @Override
@@ -42,7 +45,7 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    if(args.length==0) return (List<String>) commands.keySet();
+    if(args.length==1) return new ArrayList<>(commands.keySet());
     if(commands.containsKey(args[0])){
       if(sender.hasPermission("craftory-calculate")){
         return tabs.get(args[0]).onTabComplete(sender, command, alias, args);
@@ -55,14 +58,14 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
     if (origArgs.length == 0) {
       return list;
     }
-    Iterator<String> itel = list.iterator();
+    Iterator<String> iter = list.iterator();
     String label = origArgs[origArgs.length - 1].toLowerCase();
-    while (itel.hasNext()) {
-      String name = itel.next();
+    while (iter.hasNext()) {
+      String name = iter.next();
       if (name.toLowerCase().startsWith(label)) {
         continue;
       }
-      itel.remove();
+      iter.remove();
     }
     return list;
   }

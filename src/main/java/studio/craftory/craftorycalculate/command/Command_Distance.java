@@ -17,53 +17,21 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    UUID id = null;
-    if(sender instanceof Player) id = ((Player) sender).getUniqueId();
-    else id = CraftoryCalculate.SERVER_UUID;
+    World world = Utils.getWorld(sender);
+    UUID id = Utils.getID(sender);
     if (args.length==2){
       if(sender instanceof Player){
-        Location location = Utils.getValidLocation(args[1], id);
+        Location location = Utils.getValidLocation(args[1], id, ((Player) sender).getWorld());
         if(location != null){
           Utils.msg(sender, "Distance = " + location.distance(((Player) sender).getLocation()));
           return true;
         }
       }
     } else if(args.length==3) {
-      Location loc1 = Utils.getValidLocation(args[1], id);
-      Location loc2 = Utils.getValidLocation(args[2], id);
+      Location loc1 = Utils.getValidLocation(args[1], id, world);
+      Location loc2 = Utils.getValidLocation(args[2], id, world);
       if(loc1!=null && loc2!=null) {
-        Utils.msg(sender, "Distance = " + loc1.distance(loc2));
-        return true;
-      }
-    } else if(args.length==4) {
-      if(sender instanceof Player) {
-        Location loc = Utils.getLocationFromXYZ(((Player) sender).getWorld(), args[1],args[2],args[3]);
-        if(loc!=null){
-          Utils.msg(sender, "Distance = " + ((Player) sender).getLocation().distance(loc));
-          return true;
-        }
-      }
-    } else if(args.length==5) {
-      Location loc1 = Utils.getValidLocation(args[1], id);
-      Location loc2;
-      for(int i = 0; i < 2; i++) { //Try with each place
-        if(loc1 != null) {
-          loc2 = Utils.getLocationFromXYZ(loc1.getWorld(), args[2-i],args[3-i],args[4-i]);
-          if(loc2 != null) {
-            Utils.msg(sender, "Distance = " + loc1.distance(loc2));
-            return true;
-          }
-        } else {
-          loc1 = Utils.getValidLocation(args[4], id);
-        }
-      }
-    } else if(args.length==7) {
-      World world = null;
-      if(sender instanceof Player) world = ((Player) sender).getWorld();
-      Location loc1 = Utils.getLocationFromXYZ(world, args[1], args[2], args[3]);
-      Location loc2 = Utils.getLocationFromXYZ(world, args[4], args[5], args[6]);
-      if(loc1 != null && loc2 != null) {
-        Utils.msg(sender, "Distance = " + loc1.distance(loc2));
+        Utils.msg(sender, "Distance = " + Utils.format(loc1.distance(loc2)));
         return true;
       }
     }
@@ -74,7 +42,7 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    if(args.length == 2 || args.length == 3){
+    if(args.length == 3 || args.length == 4){
       return Utils.getOnlinePlayerNames();
     }
     ArrayList<String> tabs = new ArrayList<>();

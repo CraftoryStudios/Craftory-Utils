@@ -13,6 +13,7 @@ public final class CraftoryCalculate extends JavaPlugin {
   public static String VERSION;
   public static CraftoryCalculate plugin;
   private static HashMap<UUID, HashMap<String, Location>> savedLocations = new HashMap<>();
+  private static HashMap<UUID,Location> lastCalculatedLocation = new HashMap<>();
   public static final UUID SERVER_UUID = new UUID(0,0);
 
   @Override
@@ -24,8 +25,6 @@ public final class CraftoryCalculate extends JavaPlugin {
     this.getCommand("calculate").setTabCompleter(new CommandWrapper());
     this.getCommand("calc").setExecutor(new CommandWrapper());
     this.getCommand("calc").setTabCompleter(new CommandWrapper());
-    this.getCommand("c").setExecutor(new CommandWrapper());
-    this.getCommand("c").setTabCompleter(new CommandWrapper());
   }
 
   @Override
@@ -39,7 +38,7 @@ public final class CraftoryCalculate extends JavaPlugin {
 
   public void addSavedLocation(UUID id, String key, Location location) {
     HashMap<String, Location> map = savedLocations.getOrDefault(id,new HashMap<>());
-    map.put(key,location);
+    map.put(key,location.clone());
     savedLocations.put(id, map);
   }
 
@@ -47,4 +46,11 @@ public final class CraftoryCalculate extends JavaPlugin {
     return savedLocations.getOrDefault(id,new HashMap<>()).get(key);
   }
 
+  public void setLastCalculatedLocation(UUID id, Location location) {
+    lastCalculatedLocation.put(id, location);
+  }
+
+  public Location getLastCalculatedLocation(UUID id) {
+    return lastCalculatedLocation.get(id);
+  }
 }

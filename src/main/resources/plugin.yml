@@ -10,8 +10,6 @@ commands:
     description: Craftory-Calculate commands.
   calc:
     description: Craftory-Calculate commands.
-  c:
-    description: Craftory-Calculate commands.
 
 permisions:
   craftory-calculate:

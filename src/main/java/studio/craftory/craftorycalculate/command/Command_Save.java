@@ -17,26 +17,29 @@ public class Command_Save implements CommandExecutor, TabCompleter {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if(!sender.hasPermission("craftory-calculate.save")) return CommandWrapper.noPerms(sender);
-    UUID id = null;
-    if(sender instanceof Player) id = ((Player) sender).getUniqueId();
-    else id = CraftoryCalculate.SERVER_UUID;
+    UUID id = Utils.getID(sender);
     Location location = null;
-    if(args.length < 2) return false;
+    if(args.length < 2) return showUsage(sender);
     String key = args[1];
-    if(key.isEmpty()) return false;
+    if(key.isEmpty()) return showUsage(sender);
     if(args.length==2){
-      if(!(sender instanceof Player)) return false;
+      if(!(sender instanceof Player)) return showUsage(sender);
       location = ((Player) sender).getLocation();
     } else if(args.length==3) {
       if(args[2].equals(LAST_CALCULATED)){
-        //TODO set location to last calculated location
-        location = null;
+        location = CraftoryCalculate.plugin.getLastCalculatedLocation(id);
+      } else {
+        location = Utils.getValidLocation(args[2],id, Utils.getWorld(sender));
       }
-    } else if(args.length==5) {
-      location = Utils.getLocationFromXYZ(null, args[2], args[3], args[4]);
     }
-    if(location==null) return false;
+    if(location==null) return showUsage(sender);
     CraftoryCalculate.plugin.addSavedLocation(id, key, location);
+    Utils.msg(sender, "Saved location: " + key + " - " + location.toString());
+    return true;
+  }
+
+  private boolean showUsage(CommandSender sender) {
+    Utils.msg(sender, "Incorrect usage! Correct format (* = optional) save [Name] *'<prev>' *x,y,z  , If xyz not specified current location will be used. use '<prev>' to save last calculated location");
     return true;
   }
 

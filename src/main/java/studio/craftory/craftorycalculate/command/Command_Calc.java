@@ -63,18 +63,15 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
       for(int i=1; i < args.length; i++) {
         expression+=args[i];
       }
-      System.out.println(expression);
       if(dangerousExpression(expression)) {
         System.out.println("DANGEROUS");
-        return invalid(sender);
+        return showUsage(sender);
       }
       try {
         Double result = Double.parseDouble(engine.eval(formatExpression(expression)).toString());
         return valid(sender, expression ,result);
       } catch (Exception exception) {
-        System.out.println("error in eval");
-        exception.printStackTrace();
-        return invalid(sender);
+        return showUsage(sender);
       }
 
     }
@@ -82,11 +79,11 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
   }
 
   private boolean valid(CommandSender sender, String expression, Double result) {
-    Utils.msg(sender, expression + " = " + result);
+    Utils.msg(sender, expression + " = " + Utils.format(result));
     return true;
   }
 
-  private boolean invalid(CommandSender sender) {
+  private boolean showUsage(CommandSender sender) {
     Utils.msg(sender, "Invalid expression");
     return false;
   }
@@ -107,7 +104,7 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
     ArrayList<String> tabs = new ArrayList<>();
-    if(args.length==1) tabs.add("<Expression>");
+    if(args.length==2) tabs.add("<Expression>");
       return CommandWrapper.filterTabs(tabs, args);
   }
 }
