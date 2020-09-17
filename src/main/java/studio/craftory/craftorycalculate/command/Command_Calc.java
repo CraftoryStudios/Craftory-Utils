@@ -3,15 +3,13 @@ package studio.craftory.craftorycalculate.command;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
+import studio.craftory.craftorycalculate.Utils;
 
 public class Command_Calc implements CommandExecutor, TabCompleter {
 
@@ -84,12 +82,12 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
   }
 
   private boolean valid(CommandSender sender, String expression, Double result) {
-    CommandWrapper.msg(sender, expression + " = " + result);
+    Utils.msg(sender, expression + " = " + result);
     return true;
   }
 
   private boolean invalid(CommandSender sender) {
-    CommandWrapper.msg(sender, "Invalid expression");
+    Utils.msg(sender, "Invalid expression");
     return false;
   }
 

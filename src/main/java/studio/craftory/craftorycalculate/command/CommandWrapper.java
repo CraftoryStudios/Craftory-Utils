@@ -1,18 +1,14 @@
 package studio.craftory.craftorycalculate.command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
+import studio.craftory.craftorycalculate.Utils;
 
 public class CommandWrapper implements CommandExecutor, TabCompleter {
   private final HashMap<String, CommandExecutor> commands = new HashMap<>();
@@ -27,13 +23,14 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
     tabs.put("distance", new Command_Distance());
     commands.put("calc", new Command_Calc());
     tabs.put("calc", new Command_Calc());
+    commands.put("save", new Command_Save());
+    tabs.put("save", new Command_Save());
   }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if(!sender.hasPermission("craftory-calculate")) {
-      noPerms(sender);
-      return true;
+      return noPerms(sender);
     }
     if(args.length==0) return commands.get("").onCommand(sender, command, label, args);
     if(commands.containsKey(args[0])){
@@ -70,24 +67,9 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
     return list;
   }
 
-  public static void noPerms(CommandSender s) {
-    msg(s, "You do not have permission to do this");
+  public static boolean noPerms(CommandSender s) {
+    Utils.msg(s, "You do not have permission to do this");
+    return true;
   }
 
-  public static void msg(final CommandSender s, String msg) {
-    if (s instanceof Player) {
-      msg = ChatColor.translateAlternateColorCodes('&', msg);
-    } else {
-      msg = ChatColor.translateAlternateColorCodes('&', "[Craftory]" + msg);
-    }
-    s.sendMessage(msg);
-  }
-
-  public static List<String> getOnlinePlayerNames() {
-    Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-    Bukkit.getServer().getOnlinePlayers().toArray(players);
-    List<String> playerNames = Arrays.stream(players).map(Player::getName)
-        .collect(Collectors.toList());
-    return playerNames;
-  }
 }
