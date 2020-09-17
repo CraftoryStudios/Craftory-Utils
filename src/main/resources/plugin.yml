@@ -1,6 +1,20 @@
-name: Craftory Calculate
+name: Craftory-Calculate
 version: ${project.version}
-main: studio.craftory.craftorycalculate.CraftoryCalculate
+main: ${mainClass}
 api-version: 1.16
-authors: [MatthewJones]
+author: ${author}
 website: https://craftory.studio/
+
+commands:
+  calculate:
+    description: Craftory-Calculate commands.
+  calc:
+    description: Craftory-Calculate commands.
+  c:
+    description: Craftory-Calculate commands.
+
+permisions:
+  craftory-calculate:
+    default: op
+  craftory-calculate.save:
+    default: op
