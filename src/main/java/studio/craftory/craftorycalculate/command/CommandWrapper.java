@@ -25,15 +25,19 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
     tabs.put("help", new Command_Help());
     commands.put("distance", new Command_Distance());
     tabs.put("distance", new Command_Distance());
+    commands.put("calc", new Command_Calc());
+    tabs.put("calc", new Command_Calc());
   }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    if(!sender.hasPermission("craftory-calculate")) {
+      noPerms(sender);
+      return true;
+    }
     if(args.length==0) return commands.get("").onCommand(sender, command, label, args);
     if(commands.containsKey(args[0])){
-      if(sender.hasPermission("craftory-calculate")){
-        return commands.get(args[0]).onCommand(sender, command, label, args);
-      }
+      return commands.get(args[0]).onCommand(sender, command, label, args);
     }
     return true;
   }
@@ -64,6 +68,10 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
       itel.remove();
     }
     return list;
+  }
+
+  public static void noPerms(CommandSender s) {
+    msg(s, "You do not have permission to do this");
   }
 
   public static void msg(final CommandSender s, String msg) {
