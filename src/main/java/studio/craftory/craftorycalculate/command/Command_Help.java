@@ -8,11 +8,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import studio.craftory.craftorycalculate.Utils;
 
+/**
+ * Help command to inform user how to use the plugin
+ */
 public class Command_Help implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if(args.length == 1){
+    if (args.length == 1) {
       Utils.msg(sender, "Help function is still a WIP, best of luck!");
       return true;
     }
