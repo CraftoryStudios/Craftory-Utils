@@ -9,26 +9,33 @@ import studio.craftory.craftorycalculate.command.CommandWrapper;
 public final class CraftoryCalculate extends JavaPlugin {
 
   public static final UUID SERVER_UUID = new UUID(0, 0);
-  private static final HashMap<UUID, HashMap<String, Location>> savedLocations = new HashMap<>();
-  private static final HashMap<UUID, Location> lastCalculatedLocation = new HashMap<>();
   public static String VERSION;
   public static CraftoryCalculate plugin;
+  private static HashMap<UUID, HashMap<String, Location>> savedLocations = new HashMap<>();
+  private static HashMap<UUID, Location> lastCalculatedLocation = new HashMap<>();
 
   @Override
   public void onEnable() {
     // Plugin startup logic
+    if (!getDataFolder().exists()) {
+      getDataFolder().mkdir();
+    }
     CraftoryCalculate.VERSION = this.getDescription().getVersion();
     CraftoryCalculate.plugin = this;
     this.getCommand("calculate").setExecutor(new CommandWrapper());
     this.getCommand("calculate").setTabCompleter(new CommandWrapper());
     this.getCommand("calc").setExecutor(new CommandWrapper());
     this.getCommand("calc").setTabCompleter(new CommandWrapper());
+
+    CraftoryCalculate.lastCalculatedLocation = Data.loadRecentLocations();
+    CraftoryCalculate.savedLocations = Data.loadSavedLocations();
   }
 
   @Override
   public void onDisable() {
     // Plugin shutdown logic
     Data.saveRecentLocations(lastCalculatedLocation);
+    Data.saveSavedLocations(savedLocations);
   }
 
   /**
