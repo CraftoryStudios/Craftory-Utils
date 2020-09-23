@@ -1,4 +1,4 @@
-name: Craftory-Calculate
+name: Craftory-Utils
 version: ${project.version}
 main: ${mainClass}
 api-version: 1.16
@@ -7,12 +7,16 @@ website: https://craftory.studio/
 
 commands:
   calculate:
-    description: Craftory-Calculate commands.
+    description: Calcualation based commands
   calc:
-    description: Craftory-Calculate commands.
+    description: An alias for calculate (Calculation based commands)
 
 permisions:
-  craftory-calculate:
+  craftory-utils.calculate:
     default: op
-  craftory-calculate.save:
+  craftory-utils.calculate.saveLocations:
+    default: op
+  craftory-utils.calculate.usePlayerLocations:
+    default: op
+  craftory-utils.calculate.managePlayersSavedLocations:
     default: op

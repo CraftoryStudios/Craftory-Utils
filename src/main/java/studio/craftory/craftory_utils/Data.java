@@ -1,4 +1,4 @@
-package studio.craftory.craftorycalculate;
+package studio.craftory.craftory_utils;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -12,10 +12,10 @@ import org.bukkit.Location;
 
 public class Data {
 
-  private static final File recentFile = new File(CraftoryCalculate.plugin.getDataFolder(),
+  private static final File recentFile = new File(CraftoryUtils.plugin.getDataFolder(),
       "recent.json");
 
-  private static final File savedLocationsFile = new File(CraftoryCalculate.plugin.getDataFolder(),
+  private static final File savedLocationsFile = new File(CraftoryUtils.plugin.getDataFolder(),
       "savedLocations.json");
 
   public static void saveSavedLocations(HashMap<UUID, HashMap<String, Location>> savedLocations) {
@@ -72,7 +72,7 @@ public class Data {
 
   private static Location stringToLocation(String s) {
     String[] parts = s.split(",");
-    return new Location(CraftoryCalculate.plugin.getServer().getWorld(parts[0]),
+    return new Location(CraftoryUtils.plugin.getServer().getWorld(parts[0]),
         Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
   }
 

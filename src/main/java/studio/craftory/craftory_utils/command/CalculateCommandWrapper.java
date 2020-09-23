@@ -1,4 +1,4 @@
-package studio.craftory.craftorycalculate.command;
+package studio.craftory.craftory_utils.command;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import studio.craftory.craftorycalculate.Utils;
+import studio.craftory.craftory_utils.Utils;
 
 /**
  * Wrapper for commands, passes the logic handling to the corresponding command class

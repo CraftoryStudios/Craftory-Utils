@@ -1,4 +1,4 @@
-package studio.craftory.craftorycalculate.command;
+package studio.craftory.craftory_utils.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import studio.craftory.craftorycalculate.CraftoryCalculate;
-import studio.craftory.craftorycalculate.Utils;
+import studio.craftory.craftory_utils.CraftoryCalculate;
+import studio.craftory.craftory_utils.Utils;
 
 /**
  * Calculated the centre of a list of points

@@ -5,17 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>studio.craftory</groupId>
-  <artifactId>Craftory-Calculate</artifactId>
+  <artifactId>Craftory-Utils</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
 
-  <name>Craftory Calculate</name>
+  <name>Craftory Utils</name>
 
   <properties>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <author>MatthewJones</author>
-    <mainClass>studio.craftory.craftorycalculate.CraftoryCalculate</mainClass>
+    <mainClass>studio.craftory.craftory_utils.CraftoryUtils</mainClass>
   </properties>
   <url>https://craftory.studio/</url>
 

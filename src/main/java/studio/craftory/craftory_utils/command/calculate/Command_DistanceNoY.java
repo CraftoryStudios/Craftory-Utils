@@ -1,4 +1,4 @@
-package studio.craftory.craftorycalculate.command;
+package studio.craftory.craftory_utils.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,32 +10,33 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import studio.craftory.craftorycalculate.Utils;
+import studio.craftory.craftory_utils.Utils;
 
 /**
  * Calculates the distance between two points
  */
-public class Command_Distance implements CommandExecutor, TabCompleter {
+public class Command_DistanceNoY implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     World world = Utils.getWorld(sender);
     UUID id = Utils.getID(sender);
+    Location loc1 = null;
+    Location loc2 = null;
+    if(args.length<2) return showUsage(sender);
+    loc1 = Utils.getValidLocation(args[1], id, world);
     if (args.length == 2) { // If Single location use senders position as other
       if (sender instanceof Player) {
-        Location location = Utils.getValidLocation(args[1], id, ((Player) sender).getWorld());
-        if (location != null) {
-          Utils.msg(sender, "Distance = " + location.distance(((Player) sender).getLocation()));
-          return true;
-        }
+        loc2 = ((Player) sender).getLocation();
       }
     } else if (args.length == 3) {
-      Location loc1 = Utils.getValidLocation(args[1], id, world);
-      Location loc2 = Utils.getValidLocation(args[2], id, world);
-      if (loc1 != null && loc2 != null) {
-        Utils.msg(sender, "Distance = " + Utils.format(loc1.distance(loc2)));
-        return true;
-      }
+      loc2 = Utils.getValidLocation(args[2], id, world);
+    }
+    if (loc1 != null && loc2 != null) {
+      loc1.setY(0);
+      loc2.setY(0);
+      Utils.msg(sender, "Distance = " + Utils.format(loc1.distance(loc2)));
+      return true;
     }
     return showUsage(sender);
   }
@@ -43,7 +44,7 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
   // Inform the sender of the correct usage
   private boolean showUsage(CommandSender sender) {
     Utils.msg(sender,
-        "Please provide 1 or 2 locations in the form of a Player, Saved Location or coordinates (x,y,z)");
+        "Please provide 1 or 2 locations, ignoring the Y axis, in the form of a Player, Saved Location or coordinates (x,y,z)");
     return true;
   }
 

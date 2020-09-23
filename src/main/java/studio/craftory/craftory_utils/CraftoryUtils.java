@@ -1,16 +1,16 @@
-package studio.craftory.craftorycalculate;
+package studio.craftory.craftory_utils;
 
 import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
-import studio.craftory.craftorycalculate.command.CommandWrapper;
+import studio.craftory.craftory_utils.command.CalculateCommandWrapper;
 
-public final class CraftoryCalculate extends JavaPlugin {
+public final class CraftoryUtils extends JavaPlugin {
 
   public static final UUID SERVER_UUID = new UUID(0, 0);
   public static String VERSION;
-  public static CraftoryCalculate plugin;
+  public static CraftoryUtils plugin;
   private static HashMap<UUID, HashMap<String, Location>> savedLocations = new HashMap<>();
   private static HashMap<UUID, Location> lastCalculatedLocation = new HashMap<>();
 
@@ -20,15 +20,15 @@ public final class CraftoryCalculate extends JavaPlugin {
     if (!getDataFolder().exists()) {
       getDataFolder().mkdir();
     }
-    CraftoryCalculate.VERSION = this.getDescription().getVersion();
-    CraftoryCalculate.plugin = this;
-    this.getCommand("calculate").setExecutor(new CommandWrapper());
-    this.getCommand("calculate").setTabCompleter(new CommandWrapper());
-    this.getCommand("calc").setExecutor(new CommandWrapper());
-    this.getCommand("calc").setTabCompleter(new CommandWrapper());
+    CraftoryUtils.VERSION = this.getDescription().getVersion();
+    CraftoryUtils.plugin = this;
+    this.getCommand("calculate").setExecutor(new CalculateCommandWrapper());
+    this.getCommand("calculate").setTabCompleter(new CalculateCommandWrapper());
+    this.getCommand("calc").setExecutor(new CalculateCommandWrapper());
+    this.getCommand("calc").setTabCompleter(new CalculateCommandWrapper());
 
-    CraftoryCalculate.lastCalculatedLocation = Data.loadRecentLocations();
-    CraftoryCalculate.savedLocations = Data.loadSavedLocations();
+    CraftoryUtils.lastCalculatedLocation = Data.loadRecentLocations();
+    CraftoryUtils.savedLocations = Data.loadSavedLocations();
   }
 
   @Override
@@ -80,6 +80,15 @@ public final class CraftoryCalculate extends JavaPlugin {
    */
   public void setLastCalculatedLocation(UUID id, Location location) {
     lastCalculatedLocation.put(id, location);
+  }
+
+  /**
+   * Clears a players saved locations
+   * @param id The UUID of the player
+   * @return True if there was something to remove
+   */
+  public boolean clearSavedLocations(UUID id) {
+    return savedLocations.remove(id) != null;
   }
 
   /**

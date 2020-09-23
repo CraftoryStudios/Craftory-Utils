@@ -1,7 +1,9 @@
-package studio.craftory.craftorycalculate;
+package studio.craftory.craftory_utils;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,9 +30,9 @@ public class Utils {
    * @param world The world the sender is in
    * @return The location created or null if invalid
    */
-  public static Location getValidLocation(String s, UUID id, World world) {
+  public static Location getValidLocation(String s, UUID id, World world, boolean includePlayers) {
     Location location;
-    location = CraftoryCalculate.plugin.getSavedLocation(id, s);
+    location = CraftoryUtils.plugin.getSavedLocation(id, s);
     if (location != null) {
       return location;
     }
@@ -38,8 +40,8 @@ public class Utils {
     if (location != null) {
       return location;
     }
-    if (getOnlinePlayerNames().contains(s)) {
-      return CraftoryCalculate.plugin.getServer().getPlayer(s).getLocation().clone();
+    if (includePlayers && getOnlinePlayerNames().contains(s)) {
+      return CraftoryUtils.plugin.getServer().getPlayer(s).getLocation().clone();
     }
     return null;
   }
@@ -73,7 +75,7 @@ public class Utils {
     if (sender instanceof Player) {
       return ((Player) sender).getWorld();
     } else {
-      return CraftoryCalculate.plugin.getServer().getWorlds().get(0);
+      return CraftoryUtils.plugin.getServer().getWorlds().get(0);
     }
   }
 
@@ -114,7 +116,7 @@ public class Utils {
     if (sender instanceof Player) {
       return ((Player) sender).getUniqueId();
     } else {
-      return CraftoryCalculate.SERVER_UUID;
+      return CraftoryUtils.SERVER_UUID;
     }
   }
 
@@ -132,5 +134,21 @@ public class Utils {
   public static boolean noPerms(CommandSender s) {
     msg(s, "You do not have permission to do this");
     return true;
+  }
+
+  /* Removes any tab entries that do not start with the typed argument */
+  public static ArrayList<String> filterTabs(ArrayList<String> list, String[] origArgs) {
+    if (origArgs.length == 0) {
+      return list;
+    }
+    Iterator<String> iter = list.iterator();
+    String label = origArgs[origArgs.length - 1].toLowerCase();
+    while (iter.hasNext()) {
+      String name = iter.next();
+      if (!name.toLowerCase().startsWith(label)) {
+        iter.remove();
+      }
+    }
+    return list;
   }
 }
