@@ -1,4 +1,4 @@
-package studio.craftory.craftory_utils.command;
+package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,6 +114,6 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
     if (args.length == 2) {
       tabs.add("<Expression>");
     }
-    return CommandWrapper.filterTabs(tabs, args);
+    return tabs;
   }
 }

@@ -1,4 +1,4 @@
-package studio.craftory.craftory_utils.command;
+package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,18 @@ public class Command_DistanceNoY implements CommandExecutor, TabCompleter {
     UUID id = Utils.getID(sender);
     Location loc1 = null;
     Location loc2 = null;
-    if(args.length<2) return showUsage(sender);
-    loc1 = Utils.getValidLocation(args[1], id, world);
+    boolean hasPlayerLocationPermission = sender
+        .hasPermission("craftory-utils.calculate.usePlayerLocations");
+    if (args.length < 2) {
+      return showUsage(sender);
+    }
+    loc1 = Utils.getValidLocation(args[1], id, world, hasPlayerLocationPermission);
     if (args.length == 2) { // If Single location use senders position as other
       if (sender instanceof Player) {
         loc2 = ((Player) sender).getLocation();
       }
     } else if (args.length == 3) {
-      loc2 = Utils.getValidLocation(args[2], id, world);
+      loc2 = Utils.getValidLocation(args[2], id, world, hasPlayerLocationPermission);
     }
     if (loc1 != null && loc2 != null) {
       loc1.setY(0);
@@ -55,7 +59,7 @@ public class Command_DistanceNoY implements CommandExecutor, TabCompleter {
     ArrayList<String> tabs = new ArrayList<>();
     if (args.length >= 1 && args.length <= 3) {
       tabs.addAll(
-          CommandWrapper.filterTabs((ArrayList<String>) Utils.getOnlinePlayerNames(), args));
+          Utils.filterTabs((ArrayList<String>) Utils.getOnlinePlayerNames(), args));
     }
     tabs.add("Location");
     tabs.add("<prev>");

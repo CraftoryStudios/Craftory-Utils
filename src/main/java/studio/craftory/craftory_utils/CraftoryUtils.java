@@ -84,6 +84,7 @@ public final class CraftoryUtils extends JavaPlugin {
 
   /**
    * Clears a players saved locations
+   *
    * @param id The UUID of the player
    * @return True if there was something to remove
    */

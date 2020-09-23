@@ -1,4 +1,4 @@
-package studio.craftory.craftory_utils.command;
+package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import studio.craftory.craftory_utils.CraftoryCalculate;
+import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
 public class Command_Save implements CommandExecutor, TabCompleter {
@@ -18,9 +18,11 @@ public class Command_Save implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (!sender.hasPermission("craftory-calculate.save")) {
+    if (!sender.hasPermission("craftory-utils.calculate.saveLocations")) {
       return Utils.noPerms(sender);
     }
+    boolean hasPlayerLocationPermission = sender
+        .hasPermission("craftory-utils.calculate.usePlayerLocations");
     UUID id = Utils.getID(sender);
     Location location = null;
     if (args.length < 2) {
@@ -37,15 +39,16 @@ public class Command_Save implements CommandExecutor, TabCompleter {
       location = ((Player) sender).getLocation();
     } else if (args.length == 3) {
       if (args[2].equals(LAST_CALCULATED)) {
-        location = CraftoryCalculate.plugin.getLastCalculatedLocation(id);
+        location = CraftoryUtils.plugin.getLastCalculatedLocation(id);
       } else {
-        location = Utils.getValidLocation(args[2], id, Utils.getWorld(sender));
+        location = Utils
+            .getValidLocation(args[2], id, Utils.getWorld(sender), hasPlayerLocationPermission);
       }
     }
     if (location == null) {
       return showUsage(sender);
     }
-    CraftoryCalculate.plugin.addSavedLocation(id, key, location);
+    CraftoryUtils.plugin.addSavedLocation(id, key, location);
     Utils.msg(sender, "Saved location: " + key + " - " + location.toString());
     return true;
   }
@@ -60,14 +63,20 @@ public class Command_Save implements CommandExecutor, TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
+    if (!sender.hasPermission("craftory-utils.calculate.saveLocations")) {
+      return null;
+    }
     ArrayList<String> tabs = new ArrayList<>();
     if (args.length == 1) {
+      tabs.add("Name");
+    } else if (args.length == 2) {
       tabs.add("Location");
       tabs.add("<prev>");
-      tabs.add("Player");
-      tabs.addAll(Utils.getOnlinePlayerNames());
+      if (sender.hasPermission("craftory-utils.calculate.usePlayerLocations")) {
+        tabs.addAll(Utils.getOnlinePlayerNames());
+      }
     }
-    return tabs;
+    return Utils.filterTabs(tabs, args);
   }
 
 }

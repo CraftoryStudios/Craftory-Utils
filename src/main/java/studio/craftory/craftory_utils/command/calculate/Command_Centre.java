@@ -1,4 +1,4 @@
-package studio.craftory.craftory_utils.command;
+package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import studio.craftory.craftory_utils.CraftoryCalculate;
+import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
 /**
@@ -22,15 +22,17 @@ public class Command_Centre implements CommandExecutor, TabCompleter {
     if (args.length < 2) {
       return showUsage(sender); // Need at least one point
     }
+    boolean hasPlayerLocationPermission = sender
+        .hasPermission("craftory-utils.calculate.usePlayerLocations");
     World world = Utils.getWorld(sender);
     UUID id = Utils.getID(sender);
-    Location location = Utils.getValidLocation(args[1], id, world);
+    Location location = Utils.getValidLocation(args[1], id, world, hasPlayerLocationPermission);
     if (location == null) {
       return showUsage(sender); // If location isn't valid show usage
     }
     try {
       for (int i = 2; i < args.length; i++) { // Get each location and add them together
-        Location loc = Utils.getValidLocation(args[i], id, world);
+        Location loc = Utils.getValidLocation(args[i], id, world, hasPlayerLocationPermission);
         if (loc != null) {
           location.add(loc);
         } else {
@@ -46,7 +48,7 @@ public class Command_Centre implements CommandExecutor, TabCompleter {
     double y = Utils.format(location.getY() / amount);
     double z = Utils.format(location.getZ() / amount);
     Location centreLoc = new Location(world, x, y, z);
-    CraftoryCalculate.plugin
+    CraftoryUtils.plugin
         .setLastCalculatedLocation(id, centreLoc); // Save it as the last calculated location
     Utils.msg(sender,
         "Centre of points = " + x + "," + y + "," + z); // Inform the user of the location

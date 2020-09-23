@@ -2,24 +2,32 @@ package studio.craftory.craftory_utils.command;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.Utils;
+import studio.craftory.craftory_utils.command.calculate.Command_Calc;
+import studio.craftory.craftory_utils.command.calculate.Command_Centre;
+import studio.craftory.craftory_utils.command.calculate.Command_ClearSaved;
+import studio.craftory.craftory_utils.command.calculate.Command_Distance;
+import studio.craftory.craftory_utils.command.calculate.Command_DistanceNoY;
+import studio.craftory.craftory_utils.command.calculate.Command_Help;
+import studio.craftory.craftory_utils.command.calculate.Command_ListSaved;
+import studio.craftory.craftory_utils.command.calculate.Command_Main;
+import studio.craftory.craftory_utils.command.calculate.Command_Save;
 
 /**
  * Wrapper for commands, passes the logic handling to the corresponding command class
  */
-public class CommandWrapper implements CommandExecutor, TabCompleter {
+public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
 
   /* Command Class Maps */
   private final HashMap<String, CommandExecutor> commands = new HashMap<>();
   private final HashMap<String, TabCompleter> tabs = new HashMap<>();
 
-  public CommandWrapper() {
+  public CalculateCommandWrapper() {
     commands.put("", new Command_Main());
     tabs.put("", new Command_Main());
     commands.put("help", new Command_Help());
@@ -32,28 +40,17 @@ public class CommandWrapper implements CommandExecutor, TabCompleter {
     tabs.put("save", new Command_Save());
     commands.put("centre", new Command_Centre());
     tabs.put("centre", new Command_Centre());
-  }
-
-  /* Removes any tab entries that do not start with the typed argument */
-  public static ArrayList<String> filterTabs(ArrayList<String> list, String[] origArgs) {
-    if (origArgs.length == 0) {
-      return list;
-    }
-    Iterator<String> iter = list.iterator();
-    String label = origArgs[origArgs.length - 1].toLowerCase();
-    while (iter.hasNext()) {
-      String name = iter.next();
-      if (name.toLowerCase().startsWith(label)) {
-        continue;
-      }
-      iter.remove();
-    }
-    return list;
+    commands.put("distanceNoY", new Command_DistanceNoY());
+    tabs.put("distanceNoY", new Command_DistanceNoY());
+    commands.put("clearSaved", new Command_ClearSaved());
+    tabs.put("clearSaved", new Command_ClearSaved());
+    commands.put("listSaved", new Command_ListSaved());
+    tabs.put("listSaved", new Command_ListSaved());
   }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (!sender.hasPermission("craftory-calculate")) { // Check for base permission
+    if (!sender.hasPermission("craftory-utils.calculate")) { // Check for base permission
       return Utils.noPerms(sender);
     }
     if (args.length == 0) {

@@ -1,4 +1,4 @@
-package studio.craftory.craftory_utils.command;
+package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,6 @@ public class Command_Help implements CommandExecutor, TabCompleter {
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
     ArrayList<String> tabs = new ArrayList<>();
-    return CommandWrapper.filterTabs(tabs, args);
+    return Utils.filterTabs(tabs, args);
   }
 }
