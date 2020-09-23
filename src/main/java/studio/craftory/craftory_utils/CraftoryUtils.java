@@ -83,6 +83,17 @@ public final class CraftoryUtils extends JavaPlugin {
   }
 
   /**
+   * Removes the players saved location
+   *
+   * @param id The UUID of the player
+   * @param key The name of the saved location
+   * @return
+   */
+  public boolean removeSavedLocation(UUID id, String key) {
+    return savedLocations.getOrDefault(id, new HashMap<>()).remove(key) != null;
+  }
+
+  /**
    * Clears a players saved locations
    *
    * @param id The UUID of the player

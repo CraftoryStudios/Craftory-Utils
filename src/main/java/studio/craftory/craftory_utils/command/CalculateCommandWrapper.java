@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.Utils;
 import studio.craftory.craftory_utils.command.calculate.Command_Calc;
 import studio.craftory.craftory_utils.command.calculate.Command_Centre;
-import studio.craftory.craftory_utils.command.calculate.Command_ClearSaved;
+import studio.craftory.craftory_utils.command.calculate.Command_RemoveSaved;
 import studio.craftory.craftory_utils.command.calculate.Command_Distance;
 import studio.craftory.craftory_utils.command.calculate.Command_DistanceNoY;
 import studio.craftory.craftory_utils.command.calculate.Command_Help;
@@ -42,8 +42,8 @@ public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
     tabs.put("centre", new Command_Centre());
     commands.put("distanceNoY", new Command_DistanceNoY());
     tabs.put("distanceNoY", new Command_DistanceNoY());
-    commands.put("clearSaved", new Command_ClearSaved());
-    tabs.put("clearSaved", new Command_ClearSaved());
+    commands.put("removeSaved", new Command_RemoveSaved());
+    tabs.put("removeSaved", new Command_RemoveSaved());
     commands.put("listSaved", new Command_ListSaved());
     tabs.put("listSaved", new Command_ListSaved());
   }
@@ -66,11 +66,19 @@ public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
     if (!sender.hasPermission("craftory-calculate")) { // Check for base permission
-      Utils.noPerms(sender);
       return null;
     }
     if (args.length == 1) {
-      return new ArrayList<>(commands.keySet()); // Return all commands
+      ArrayList<String> list = new ArrayList<>();
+      list.add("calc");
+      list.add("help");
+      list.add("distance");
+      list.add("distanceNoY");
+      if(sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")){
+        list.add("removeSaved");
+        list.add("listSaved");
+        list.add("getSaved");
+      }
     }
     if (commands.containsKey(args[0])) {
       return tabs.get(args[0]).onTabComplete(sender, command, alias, args);

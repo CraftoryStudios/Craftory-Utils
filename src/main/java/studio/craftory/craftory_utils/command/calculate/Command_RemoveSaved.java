@@ -9,7 +9,7 @@ import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
-public class Command_ClearSaved implements CommandExecutor, TabCompleter {
+public class Command_RemoveSaved implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -20,31 +20,32 @@ public class Command_ClearSaved implements CommandExecutor, TabCompleter {
       if (Utils.getOnlinePlayerNames().contains(args[1])) {
         if (CraftoryUtils.plugin.clearSavedLocations(
             CraftoryUtils.plugin.getServer().getPlayer(args[1]).getUniqueId())) {
-          return removed(sender, args[1]);
+          Utils.msg(sender, "Cleared " + args[1] + "'s saved locations");
         } else {
-          return nothingToRemove(sender, args[1]);
+          Utils.msg(sender, args[1] + " has no saved locations to clear");
         }
+        return true;
+      }
+    } else if (args.length == 3) {
+      if (Utils.getOnlinePlayerNames().contains(args[1])) {
+        if (CraftoryUtils.plugin.removeSavedLocation(
+            CraftoryUtils.plugin.getServer().getPlayer(args[1]).getUniqueId(), args[2])) {
+          Utils.msg(sender, "Removed " + args[1] + "'s saved location " + args[2]);
+        } else {
+          Utils.msg(sender, args[1] + " does not have a saved location named '" + args[2] + "'");
+        }
+        return true;
       }
     }
     return showUsage(sender);
   }
 
-  // Inform the sender the players saved locations have been removed
-  private boolean removed(CommandSender sender, String player) {
-    Utils.msg(sender, "Cleared " + player + "'s saved locations");
-    return true;
-  }
 
-  // Inform the sender that the player had no locations to remove
-  private boolean nothingToRemove(CommandSender sender, String player) {
-    Utils.msg(sender, player + " has no saved locations to clear");
-    return true;
-  }
 
   // Inform the sender of the correct usage
   private boolean showUsage(CommandSender sender) {
     Utils.msg(sender,
-        "Incorrect usage! Correct format = clearSaved <Player_Name> *Note currently player must be online");
+        "Incorrect usage! Correct format = clearSaved <Player_Name> <Location name> (Not giving a location name will remove all) *Note currently player must be online");
     return true;
   }
 
@@ -61,6 +62,8 @@ public class Command_ClearSaved implements CommandExecutor, TabCompleter {
     } else if (args.length == 2) {
       tabs.addAll(Utils.getOnlinePlayerNames());
       return Utils.filterTabs(tabs, args);
+    } else  if (args.length == 3  && args[2].isEmpty()) {
+      tabs.add("<Location Name>");
     }
     return tabs;
   }
