@@ -13,12 +13,11 @@ import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.Utils;
 
 /**
- * Calculates the distance between two points
+ * Calculates the distance between two points in x,y,z space
  */
 public class Command_Distance implements CommandExecutor, TabCompleter {
 
-  @Override
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+  protected static boolean calculateDistance(CommandSender sender, String[] args, boolean ignoreY) {
     World world = Utils.getWorld(sender);
     UUID id = Utils.getID(sender);
     boolean hasPlayerLocationPermission = sender
@@ -37,6 +36,10 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
       loc2 = Utils.getValidLocation(args[2], id, world, hasPlayerLocationPermission);
     }
     if (loc1 != null && loc2 != null) {
+      if (ignoreY) {
+        loc1.setY(0);
+        loc2.setY(0);
+      }
       Utils.msg(sender, "Distance = " + Utils.format(loc1.distance(loc2)));
       return true;
     }
@@ -44,12 +47,16 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
   }
 
   // Inform the sender of the correct usage
-  private boolean showUsage(CommandSender sender) {
+  private static boolean showUsage(CommandSender sender) {
     Utils.msg(sender,
         "Please provide 1 or 2 locations in the form of a Player, Saved Location or coordinates (x,y,z)");
     return true;
   }
 
+  @Override
+  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    return calculateDistance(sender, args, false);
+  }
 
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,

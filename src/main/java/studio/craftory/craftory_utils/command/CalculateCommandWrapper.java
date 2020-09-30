@@ -7,15 +7,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import studio.craftory.craftory_utils.Constants;
+import studio.craftory.craftory_utils.Constants.Permissions;
 import studio.craftory.craftory_utils.Utils;
 import studio.craftory.craftory_utils.command.calculate.Command_Calc;
 import studio.craftory.craftory_utils.command.calculate.Command_Centre;
-import studio.craftory.craftory_utils.command.calculate.Command_RemoveSaved;
 import studio.craftory.craftory_utils.command.calculate.Command_Distance;
 import studio.craftory.craftory_utils.command.calculate.Command_DistanceNoY;
 import studio.craftory.craftory_utils.command.calculate.Command_Help;
 import studio.craftory.craftory_utils.command.calculate.Command_ListSaved;
 import studio.craftory.craftory_utils.command.calculate.Command_Main;
+import studio.craftory.craftory_utils.command.calculate.Command_RemoveSaved;
 import studio.craftory.craftory_utils.command.calculate.Command_Save;
 
 /**
@@ -65,20 +67,25 @@ public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    if (!sender.hasPermission("craftory-calculate")) { // Check for base permission
+    if (!sender.hasPermission(Constants.Permissions.BASE)) { // Check for base permission
       return null;
     }
     if (args.length == 1) {
       ArrayList<String> list = new ArrayList<>();
       list.add("calc");
-      list.add("help");
+      list.add("centre");
       list.add("distance");
       list.add("distanceNoY");
-      if(sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")){
-        list.add("removeSaved");
-        list.add("listSaved");
-        list.add("getSaved");
+      list.add("help");
+      if (sender.hasPermission(Permissions.SAVE_LOCATIONS)) {
+        list.add("save");
       }
+      if (sender.hasPermission(Permissions.MANAGE_PLAYER_LOCATIONS)) {
+        //list.add("getSaved");
+        list.add("listSaved");
+        list.add("removeSaved");
+      }
+      return Utils.filterTabs(list, args);
     }
     if (commands.containsKey(args[0])) {
       return tabs.get(args[0]).onTabComplete(sender, command, alias, args);

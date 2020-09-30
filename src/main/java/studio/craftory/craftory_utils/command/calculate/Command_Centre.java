@@ -48,7 +48,7 @@ public class Command_Centre implements CommandExecutor, TabCompleter {
     double y = Utils.format(location.getY() / amount);
     double z = Utils.format(location.getZ() / amount);
     Location centreLoc = new Location(world, x, y, z);
-    CraftoryUtils.plugin
+    CraftoryUtils.calculateManager
         .setLastCalculatedLocation(id, centreLoc); // Save it as the last calculated location
     Utils.msg(sender,
         "Centre of points = " + x + "," + y + "," + z); // Inform the user of the location

@@ -62,17 +62,18 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (args.length > 1) {
-      String expression = "";
+      StringBuilder expression = new StringBuilder();
       for (int i = 1; i < args.length; i++) {
-        expression += args[i];
+        expression.append(args[i]);
       }
-      if (dangerousExpression(expression)) {
+      if (dangerousExpression(expression.toString())) {
         System.out.println("DANGEROUS");
         return showUsage(sender);
       }
       try {
-        Double result = Double.parseDouble(engine.eval(formatExpression(expression)).toString());
-        return valid(sender, expression, result);
+        Double result = Double
+            .parseDouble(engine.eval(formatExpression(expression.toString())).toString());
+        return valid(sender, expression.toString(), result);
       } catch (Exception exception) {
         return showUsage(sender);
       }

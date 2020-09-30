@@ -9,25 +9,34 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
+/**
+ * Lists a players saved locations
+ */
 public class Command_ListSaved implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (!sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")) {
-      return Utils.noPerms(sender);
+    String name = null;
+    if (args.length == 1 && sender instanceof Player) {
+      name = sender.getName();
     }
-    if (args.length == 2) {
-      if (Utils.getOnlinePlayerNames().contains(args[1])) {
-        HashMap<String, Location> locations = CraftoryUtils.plugin
-            .getSavedLocations(CraftoryUtils.plugin.getServer().getPlayer(args[1]).getUniqueId());
-        if (locations == null || locations.keySet().isEmpty()) {
-          return noLocations(sender, args[1]);
-        } else {
-          return listSaved(sender, args[1], locations.keySet());
-        }
+    if (args.length == 2 && Utils.getOnlinePlayerNames().contains(args[1])) {
+      if (!sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")) {
+        return Utils.noPerms(sender);
+      }
+      name = args[1];
+    }
+    if (name != null) {
+      HashMap<String, Location> locations = CraftoryUtils.calculateManager
+          .getSavedLocations(CraftoryUtils.plugin.getServer().getPlayer(name).getUniqueId());
+      if (locations == null || locations.keySet().isEmpty()) {
+        return noLocations(sender, name);
+      } else {
+        return listSaved(sender, name, locations.keySet());
       }
     }
     return showUsage(sender);

@@ -39,7 +39,7 @@ public class Command_Save implements CommandExecutor, TabCompleter {
       location = ((Player) sender).getLocation();
     } else if (args.length == 3) {
       if (args[2].equals(LAST_CALCULATED)) {
-        location = CraftoryUtils.plugin.getLastCalculatedLocation(id);
+        location = CraftoryUtils.calculateManager.getLastCalculatedLocation(id);
       } else {
         location = Utils
             .getValidLocation(args[2], id, Utils.getWorld(sender), hasPlayerLocationPermission);
@@ -48,7 +48,7 @@ public class Command_Save implements CommandExecutor, TabCompleter {
     if (location == null) {
       return showUsage(sender);
     }
-    CraftoryUtils.plugin.addSavedLocation(id, key, location);
+    CraftoryUtils.calculateManager.addSavedLocation(id, key, location);
     Utils.msg(sender, "Saved location: " + key + " - " + location.toString());
     return true;
   }

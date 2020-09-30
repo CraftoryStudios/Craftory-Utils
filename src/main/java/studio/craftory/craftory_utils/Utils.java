@@ -32,7 +32,7 @@ public class Utils {
    */
   public static Location getValidLocation(String s, UUID id, World world, boolean includePlayers) {
     Location location;
-    location = CraftoryUtils.plugin.getSavedLocation(id, s);
+    location = CraftoryUtils.calculateManager.getSavedLocation(id, s);
     if (location != null) {
       return location;
     }
