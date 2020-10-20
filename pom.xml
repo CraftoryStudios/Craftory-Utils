@@ -16,6 +16,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <author>MatthewJones</author>
     <mainClass>studio.craftory.craftory_utils.CraftoryUtils</mainClass>
+    <sonar.projectKey>CraftoryStudios_Craftory-Utils</sonar.projectKey>
+    <sonar.organization>craftorystudios</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
   <url>https://craftory.studio/</url>
 
