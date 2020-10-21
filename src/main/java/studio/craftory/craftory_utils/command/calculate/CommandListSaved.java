@@ -1,22 +1,30 @@
 package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import javax.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
 /**
  * Lists a players saved locations
  */
-public class Command_ListSaved implements CommandExecutor, TabCompleter {
+public class CommandListSaved implements CommandExecutor, TabCompleter {
+
+  @Inject
+  private CalculateManager calculateManager;
+
+  @Inject
+  private CraftoryUtils plugin;
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -31,8 +39,7 @@ public class Command_ListSaved implements CommandExecutor, TabCompleter {
       name = args[1];
     }
     if (name != null) {
-      HashMap<String, Location> locations = CraftoryUtils.calculateManager
-          .getSavedLocations(CraftoryUtils.plugin.getServer().getPlayer(name).getUniqueId());
+      Map<String, Location> locations = calculateManager.getSavedLocations(plugin.getServer().getPlayer(name).getUniqueId());
       if (locations == null || locations.keySet().isEmpty()) {
         return noLocations(sender, name);
       } else {
@@ -64,10 +71,10 @@ public class Command_ListSaved implements CommandExecutor, TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    if (!sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")) {
-      return null;
-    }
     ArrayList<String> tabs = new ArrayList<>();
+    if (!sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")) {
+      return tabs;
+    }
     if (args.length == 1) {
       tabs.add("Player");
       return tabs;

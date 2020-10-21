@@ -1,13 +1,14 @@
 package studio.craftory.craftory_utils;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Location;
 
 public class CalculateManager {
 
-  private static HashMap<UUID, HashMap<String, Location>> savedLocations = new HashMap<>();
-  private static HashMap<UUID, Location> lastCalculatedLocation = new HashMap<>();
+  private Map<UUID, Map<String, Location>> savedLocations = new HashMap<>();
+  private Map<UUID, Location> lastCalculatedLocation = new HashMap<>();
 
   public CalculateManager() {
     load();
@@ -47,6 +48,7 @@ public class CalculateManager {
    * Gets the players last calculated location
    *
    * @param id The UUID of the player
+   *
    * @return The Location
    */
   public Location getLastCalculatedLocation(UUID id) {
@@ -58,6 +60,7 @@ public class CalculateManager {
    *
    * @param id The UUID of the player
    * @param key The name of the Location
+   *
    * @return The Location or null
    */
   public Location getSavedLocation(UUID id, String key) {
@@ -72,7 +75,7 @@ public class CalculateManager {
    * @param location The location
    */
   public void addSavedLocation(UUID id, String key, Location location) {
-    HashMap<String, Location> map = savedLocations.getOrDefault(id, new HashMap<>());
+    Map<String, Location> map = savedLocations.getOrDefault(id, new HashMap<>());
     map.put(key, location.clone());
     savedLocations.put(id, map);
   }
@@ -81,9 +84,10 @@ public class CalculateManager {
    * Gets the saved locations of a player
    *
    * @param id The UUID of the player
+   *
    * @return A map of Name to Locations
    */
-  public HashMap<String, Location> getSavedLocations(UUID id) {
+  public Map<String, Location> getSavedLocations(UUID id) {
     return savedLocations.getOrDefault(id, new HashMap<>());
   }
 
@@ -91,9 +95,11 @@ public class CalculateManager {
    * Clears a players saved locations
    *
    * @param id The UUID of the player
+   *
    * @return True if there was something to remove
    */
   public boolean clearSavedLocations(UUID id) {
     return savedLocations.remove(id) != null;
   }
+
 }

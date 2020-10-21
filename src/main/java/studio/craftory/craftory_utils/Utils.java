@@ -1,38 +1,46 @@
 package studio.craftory.craftory_utils;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Helpful Util methods class
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utils {
 
   private static final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
+  private static final CraftoryUtils plugin = JavaPlugin.getPlugin(CraftoryUtils.class);
+
+  private static final CalculateManager calculateManager = plugin.getCalculateManager();
+
   /**
-   * Gets a location from a string in 3 possible ways: - From coordinates in the form x,y,z - From a
-   * player's saved location - From another players current position
+   * Gets a location from a string in 3 possible ways: - From coordinates in the form x,y,z - From a player's saved location - From another players
+   * current position
    *
    * @param s The string
    * @param id The UUID Of the sender
    * @param world The world the sender is in
+   *
    * @return The location created or null if invalid
    */
   public static Location getValidLocation(String s, UUID id, World world, boolean includePlayers) {
     Location location;
-    location = CraftoryUtils.calculateManager.getSavedLocation(id, s);
+    location = calculateManager.getSavedLocation(id, s);
     if (location != null) {
       return location;
     }
@@ -41,7 +49,14 @@ public class Utils {
       return location;
     }
     if (includePlayers && getOnlinePlayerNames().contains(s)) {
-      return CraftoryUtils.plugin.getServer().getPlayer(s).getLocation().clone();
+      return plugin.getServer().getPlayer(s).getLocation().clone();
+    }
+    return null;
+  }
+
+  public static UUID getID(String name) {
+    if (getOnlinePlayerNames().contains(name)) {
+      return plugin.getServer().getPlayer(name).getUniqueId();
     }
     return null;
   }
@@ -51,6 +66,7 @@ public class Utils {
    *
    * @param s The string
    * @param world The world the coordinates are in
+   *
    * @return The created location or null if invalid
    */
   public static Location getLocationFromXYZ(String s, World world) {
@@ -60,8 +76,7 @@ public class Utils {
         return new Location(world, Double.parseDouble(parts[0]), Double.parseDouble(parts[1]),
             Double.parseDouble(parts[2]));
       }
-    } catch (Exception ignore) {
-    }
+    } catch (Exception ignore) {/**/}
     return null;
   }
 
@@ -69,13 +84,14 @@ public class Utils {
    * Gets the world of the sender (The default world if the sender is the server
    *
    * @param sender The sender of the command
+   *
    * @return The world
    */
   public static World getWorld(CommandSender sender) {
     if (sender instanceof Player) {
       return ((Player) sender).getWorld();
     } else {
-      return CraftoryUtils.plugin.getServer().getWorlds().get(0);
+      return plugin.getServer().getWorlds().get(0);
     }
   }
 
@@ -103,13 +119,14 @@ public class Utils {
     Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
     Bukkit.getServer().getOnlinePlayers().toArray(players);
     return Arrays.stream(players).map(Player::getName)
-        .collect(Collectors.toList());
+                 .collect(Collectors.toList());
   }
 
   /**
    * Gets the UUID of the sender (All zeros if the sender is the server)
    *
    * @param sender The sender
+   *
    * @return The UUID
    */
   public static UUID getID(CommandSender sender) {
@@ -124,6 +141,7 @@ public class Utils {
    * Rounds the given double correctly
    *
    * @param d The un-rounded double
+   *
    * @return The rounded double
    */
   public static Double format(Double d) {
@@ -137,7 +155,7 @@ public class Utils {
   }
 
   /* Removes any tab entries that do not start with the typed argument */
-  public static ArrayList<String> filterTabs(ArrayList<String> list, String[] origArgs) {
+  public static List<String> filterTabs(List<String> list, String[] origArgs) {
     if (origArgs.length == 0) {
       return list;
     }
@@ -151,4 +169,5 @@ public class Utils {
     }
     return list;
   }
+
 }

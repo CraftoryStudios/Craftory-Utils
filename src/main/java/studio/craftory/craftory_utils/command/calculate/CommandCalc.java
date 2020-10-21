@@ -3,6 +3,7 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import org.bukkit.command.Command;
@@ -11,53 +12,54 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.Utils;
 
-public class Command_Calc implements CommandExecutor, TabCompleter {
+public class CommandCalc implements CommandExecutor, TabCompleter {
 
   private static final ScriptEngine engine = new ScriptEngineManager()
       .getEngineByName("nashorn"); // Efficient Java Script engine
 
   /* Map of functions for the command to the Java Script equivalent */
-  private final HashMap<String, String> jsFunctions = new HashMap<String, String>() {
-    {
-      // Properties
-      put("e", "Math.E");
-      put("pi", "Math.PI");
-      put("sqrt2", "Math.SQRT2");
-      put("sqrt1_2", "Math.SQRT1_2");
-      put("ln2", "Math.LN2");
-      put("ln10", "Math.LN10");
-      put("log2e", "Math.LOG2E");
-      put("log10e", "Math.LOG10E");
+  private static final Map<String, String> jsFunctions = new HashMap<>();
 
-      // Functions
-      put("abs", "Math.abs");
-      put("acos", "Math.acos");
-      put("acosh", "Math.acosh");
-      put("asin", "Math.asin");
-      put("asinh", "Math.asinh");
-      put("atan", "Math.atan");
-      put("atan2", "Math.atan2");
-      put("atanh", "Math.atanh");
-      put("cbrt", "Math.cbrt");
-      put("ceil", "Math.ceil");
-      put("cos", "Math.cos");
-      put("cosh", "Math.cosh");
-      put("exp", "Math.exp");
-      put("floor", "Math.floor");
-      put("log", "Math.log");
-      put("max", "Math.max");
-      put("min", "Math.min");
-      put("pow", "Math.pow");
-      put("random", "Math.random");
-      put("round", "Math.round");
-      put("sin", "Math.sin");
-      put("sinh", "Math.sinh");
-      put("sqrt", "Math.sqrt");
-      put("tan", "Math.tan");
-      put("tanh", "Math.tanh");
-      put("trunc", "Math.trunc");
-    }
-  };
+  static {
+    // Properties
+    jsFunctions.put("e", "Math.E");
+    jsFunctions.put("pi", "Math.PI");
+    jsFunctions.put("sqrt2", "Math.SQRT2");
+    jsFunctions.put("sqrt1_2", "Math.SQRT1_2");
+    jsFunctions.put("ln2", "Math.LN2");
+    jsFunctions.put("ln10", "Math.LN10");
+    jsFunctions.put("log2e", "Math.LOG2E");
+    jsFunctions.put("log10e", "Math.LOG10E");
+
+    // Functions
+    jsFunctions.put("abs", "Math.abs");
+    jsFunctions.put("acos", "Math.acos");
+    jsFunctions.put("acosh", "Math.acosh");
+    jsFunctions.put("asin", "Math.asin");
+    jsFunctions.put("asinh", "Math.asinh");
+    jsFunctions.put("atan", "Math.atan");
+    jsFunctions.put("atan2", "Math.atan2");
+    jsFunctions.put("atanh", "Math.atanh");
+    jsFunctions.put("cbrt", "Math.cbrt");
+    jsFunctions.put("ceil", "Math.ceil");
+    jsFunctions.put("cos", "Math.cos");
+    jsFunctions.put("cosh", "Math.cosh");
+    jsFunctions.put("exp", "Math.exp");
+    jsFunctions.put("floor", "Math.floor");
+    jsFunctions.put("log", "Math.log");
+    jsFunctions.put("max", "Math.max");
+    jsFunctions.put("min", "Math.min");
+    jsFunctions.put("pow", "Math.pow");
+    jsFunctions.put("random", "Math.random");
+    jsFunctions.put("round", "Math.round");
+    jsFunctions.put("sin", "Math.sin");
+    jsFunctions.put("sinh", "Math.sinh");
+    jsFunctions.put("sqrt", "Math.sqrt");
+    jsFunctions.put("tan", "Math.tan");
+    jsFunctions.put("tanh", "Math.tanh");
+    jsFunctions.put("trunc", "Math.trunc");
+  }
+
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -67,7 +69,6 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
         expression.append(args[i]);
       }
       if (dangerousExpression(expression.toString())) {
-        System.out.println("DANGEROUS");
         return showUsage(sender);
       }
       try {
@@ -102,16 +103,16 @@ public class Command_Calc implements CommandExecutor, TabCompleter {
   // Formats the given expression into java script code
   private String formatExpression(String expression) {
     return jsFunctions.entrySet()
-        .stream()
-        .reduce(expression.toLowerCase(),
-            (s, e) -> s.replace(e.getKey(), e.getValue()),
-            (s1, s2) -> null);
+                      .stream()
+                      .reduce(expression.toLowerCase(),
+                          (s, e) -> s.replace(e.getKey(), e.getValue()),
+                          (s1, s2) -> null);
   }
 
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    ArrayList<String> tabs = new ArrayList<>();
+    List<String> tabs = new ArrayList<>();
     if (args.length == 2) {
       tabs.add("<Expression>");
     }

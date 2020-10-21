@@ -15,7 +15,7 @@ import studio.craftory.craftory_utils.Utils;
 /**
  * Calculates the distance between two points in x,y,z space
  */
-public class Command_Distance implements CommandExecutor, TabCompleter {
+public class CommandDistance implements CommandExecutor, TabCompleter {
 
   protected static boolean calculateDistance(CommandSender sender, String[] args, boolean ignoreY) {
     World world = Utils.getWorld(sender);
@@ -24,7 +24,7 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
         .hasPermission("craftory-utils.calculate.usePlayerLocations");
     Location loc1 = null;
     Location loc2 = null;
-    if (args.length < 2) {
+    if (args.length >= 2) {
       return showUsage(sender);
     }
     loc1 = Utils.getValidLocation(args[1], id, world, hasPlayerLocationPermission);
@@ -53,6 +53,19 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
     return true;
   }
 
+  public static List<String> tabComplete(String[] args) {
+
+    List<String> tabs = new ArrayList<>();
+    if (args.length >= 1 && args.length <= 3) {
+      tabs.addAll(
+          Utils.filterTabs(Utils.getOnlinePlayerNames(), args));
+    }
+    tabs.add("Location");
+    tabs.add("<prev>");
+    tabs.add("Player");
+    return tabs;
+  }
+
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     return calculateDistance(sender, args, false);
@@ -61,14 +74,6 @@ public class Command_Distance implements CommandExecutor, TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    ArrayList<String> tabs = new ArrayList<>();
-    if (args.length >= 1 && args.length <= 3) {
-      tabs.addAll(
-          Utils.filterTabs((ArrayList<String>) Utils.getOnlinePlayerNames(), args));
-    }
-    tabs.add("Location");
-    tabs.add("<prev>");
-    tabs.add("Player");
-    return tabs;
+    return tabComplete(args);
   }
 }

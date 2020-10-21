@@ -3,19 +3,23 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import studio.craftory.craftory_utils.CraftoryUtils;
+import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Utils;
 
 /**
  * Calculated the centre of a list of points
  */
-public class Command_Centre implements CommandExecutor, TabCompleter {
+public class CommandCentre implements CommandExecutor, TabCompleter {
+
+  @Inject
+  private CalculateManager calculateManager;
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -48,24 +52,23 @@ public class Command_Centre implements CommandExecutor, TabCompleter {
     double y = Utils.format(location.getY() / amount);
     double z = Utils.format(location.getZ() / amount);
     Location centreLoc = new Location(world, x, y, z);
-    CraftoryUtils.calculateManager
-        .setLastCalculatedLocation(id, centreLoc); // Save it as the last calculated location
-    Utils.msg(sender,
-        "Centre of points = " + x + "," + y + "," + z); // Inform the user of the location
+    // Save it as the last calculated location
+    calculateManager.setLastCalculatedLocation(id, centreLoc);
+    // Inform the user of the location
+    Utils.msg(sender, "Centre of points = " + x + "," + y + "," + z);
     return true;
   }
 
   // Inform the sender of the correct usage
   private boolean showUsage(CommandSender sender) {
-    Utils.msg(sender,
-        "Invalid used of centre please provide a list of locations separated by a space");
+    Utils.msg(sender, "Invalid used of centre please provide a list of locations separated by a space");
     return true;
   }
 
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
-    ArrayList<String> tabs = new ArrayList<>();
+    List<String> tabs = new ArrayList<>();
     if (args.length == 1) {
       tabs.add("Location");
       tabs.add("<prev>");
