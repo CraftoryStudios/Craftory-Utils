@@ -60,7 +60,6 @@ public class CommandCalc implements CommandExecutor, TabCompleter {
     jsFunctions.put("trunc", "Math.trunc");
   }
 
-
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (args.length > 1) {
@@ -118,4 +117,5 @@ public class CommandCalc implements CommandExecutor, TabCompleter {
     }
     return tabs;
   }
+
 }

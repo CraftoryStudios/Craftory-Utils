@@ -3,7 +3,6 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -18,8 +17,11 @@ import studio.craftory.craftory_utils.Utils;
  */
 public class CommandCentre implements CommandExecutor, TabCompleter {
 
-  @Inject
-  private CalculateManager calculateManager;
+  private final CalculateManager calculateManager;
+
+  public CommandCentre(CalculateManager calculateManager) {
+    this.calculateManager = calculateManager;
+  }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -81,4 +83,5 @@ public class CommandCentre implements CommandExecutor, TabCompleter {
     tabs.addAll(Utils.getOnlinePlayerNames());
     return tabs;
   }
+
 }

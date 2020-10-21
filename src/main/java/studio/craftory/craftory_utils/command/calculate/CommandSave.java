@@ -3,7 +3,6 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,8 +16,11 @@ public class CommandSave implements CommandExecutor, TabCompleter {
 
   private static final String LAST_CALCULATED = "<prev>";
 
-  @Inject
-  private CalculateManager calculateManager;
+  private final CalculateManager calculateManager;
+
+  public CommandSave(CalculateManager calculateManager) {
+    this.calculateManager = calculateManager;
+  }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

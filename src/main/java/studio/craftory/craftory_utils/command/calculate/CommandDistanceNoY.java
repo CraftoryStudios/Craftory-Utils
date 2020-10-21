@@ -21,4 +21,5 @@ public class CommandDistanceNoY implements CommandExecutor, TabCompleter {
       String[] args) {
     return CommandDistance.tabComplete(args);
   }
+
 }

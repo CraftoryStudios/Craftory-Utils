@@ -76,4 +76,5 @@ public class CommandDistance implements CommandExecutor, TabCompleter {
       String[] args) {
     return tabComplete(args);
   }
+
 }

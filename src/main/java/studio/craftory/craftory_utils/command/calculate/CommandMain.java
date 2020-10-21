@@ -2,11 +2,11 @@ package studio.craftory.craftory_utils.command.calculate;
 
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Inject;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.plugin.java.JavaPlugin;
 import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
@@ -15,12 +15,12 @@ import studio.craftory.craftory_utils.Utils;
  */
 public class CommandMain implements CommandExecutor, TabCompleter {
 
-  @Inject
-  private CraftoryUtils plugin;
+
+  private static final String VERSION = JavaPlugin.getPlugin(CraftoryUtils.class).getVersion();
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    Utils.msg(sender, "Currently running Craftory-Calculate version " + plugin.getVersion());
+    Utils.msg(sender, "Currently running Craftory-Calculate version " + VERSION);
     return true;
   }
 
@@ -29,4 +29,5 @@ public class CommandMain implements CommandExecutor, TabCompleter {
       String[] args) {
     return Collections.emptyList();
   }
+
 }

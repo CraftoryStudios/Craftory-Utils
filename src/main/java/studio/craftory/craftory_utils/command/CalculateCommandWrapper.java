@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Constants;
 import studio.craftory.craftory_utils.Constants.Commands;
 import studio.craftory.craftory_utils.Constants.Permissions;
@@ -31,7 +32,7 @@ public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
   private final HashMap<String, CommandExecutor> commands = new HashMap<>();
   private final HashMap<String, TabCompleter> tabs = new HashMap<>();
 
-  public CalculateCommandWrapper() {
+  public CalculateCommandWrapper(CalculateManager calculateManager) {
     commands.put(Commands.MAIN, new CommandMain());
     tabs.put(Commands.MAIN, new CommandMain());
     commands.put(Commands.HELP, new CommandHelp());
@@ -40,16 +41,16 @@ public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
     tabs.put(Commands.DISTANCE, new CommandDistance());
     commands.put(Commands.CALC, new CommandCalc());
     tabs.put(Commands.CALC, new CommandCalc());
-    commands.put(Commands.SAVE, new CommandSave());
-    tabs.put(Commands.SAVE, new CommandSave());
-    commands.put(Commands.CENTRE, new CommandCentre());
-    tabs.put(Commands.CENTRE, new CommandCentre());
+    commands.put(Commands.SAVE, new CommandSave(calculateManager));
+    tabs.put(Commands.SAVE, new CommandSave(calculateManager));
+    commands.put(Commands.CENTRE, new CommandCentre(calculateManager));
+    tabs.put(Commands.CENTRE, new CommandCentre(calculateManager));
     commands.put(Commands.DISTANCE_NO_Y, new CommandDistanceNoY());
     tabs.put(Commands.DISTANCE_NO_Y, new CommandDistanceNoY());
-    commands.put(Constants.Commands.REMOVE_SAVED, new CommandRemoveSaved());
-    tabs.put(Constants.Commands.REMOVE_SAVED, new CommandRemoveSaved());
-    commands.put(Commands.LIST_SAVED, new CommandListSaved());
-    tabs.put(Commands.LIST_SAVED, new CommandListSaved());
+    commands.put(Constants.Commands.REMOVE_SAVED, new CommandRemoveSaved(calculateManager));
+    tabs.put(Constants.Commands.REMOVE_SAVED, new CommandRemoveSaved(calculateManager));
+    commands.put(Commands.LIST_SAVED, new CommandListSaved(calculateManager));
+    tabs.put(Commands.LIST_SAVED, new CommandListSaved(calculateManager));
   }
 
   @Override

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.inject.Inject;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.CalculateManager;
-import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
 
 /**
@@ -20,11 +19,11 @@ import studio.craftory.craftory_utils.Utils;
  */
 public class CommandListSaved implements CommandExecutor, TabCompleter {
 
-  @Inject
-  private CalculateManager calculateManager;
+  private final CalculateManager calculateManager;
 
-  @Inject
-  private CraftoryUtils plugin;
+  public CommandListSaved(CalculateManager calculateManager) {
+    this.calculateManager = calculateManager;
+  }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -39,7 +38,11 @@ public class CommandListSaved implements CommandExecutor, TabCompleter {
       name = args[1];
     }
     if (name != null) {
-      Map<String, Location> locations = calculateManager.getSavedLocations(plugin.getServer().getPlayer(name).getUniqueId());
+      UUID id = Utils.getID(name);
+      if (id == null) {
+        return showUsage(sender);
+      }
+      Map<String, Location> locations = calculateManager.getSavedLocations(id);
       if (locations == null || locations.keySet().isEmpty()) {
         return noLocations(sender, name);
       } else {
