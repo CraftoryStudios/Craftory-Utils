@@ -9,12 +9,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.Utils;
-import studio.craftory.craftory_utils.command.BaseCommand;
+import studio.craftory.craftory_utils.command.IBaseCommand;
 
 /**
  * Calculates the distance between two points in x,y,z space
  */
-public class CommandDistance extends BaseCommand {
+public class CommandDistance implements IBaseCommand {
 
   protected static boolean calculateDistance(CommandSender sender, String[] args, boolean ignoreY) {
     World world = Utils.getWorld(sender);

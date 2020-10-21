@@ -7,12 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
-import studio.craftory.craftory_utils.command.BaseCommand;
+import studio.craftory.craftory_utils.command.IBaseCommand;
 
 /**
  * Command for simply typing calculate or any of the aliases
  */
-public class CommandMain extends BaseCommand {
+public class CommandMain implements IBaseCommand {
 
 
   private static final String VERSION = JavaPlugin.getPlugin(CraftoryUtils.class).getVersion();

@@ -55,7 +55,7 @@ public class CalculateCommandWrapper implements CommandExecutor, TabCompleter {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (!sender.hasPermission("craftory-utils.calculate")) { // Check for base permission
+    if (!sender.hasPermission(Permissions.BASE)) { // Check for base permission
       return Utils.noPerms(sender);
     }
     if (args.length == 0) {

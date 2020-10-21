@@ -5,12 +5,12 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import studio.craftory.craftory_utils.Utils;
-import studio.craftory.craftory_utils.command.BaseCommand;
+import studio.craftory.craftory_utils.command.IBaseCommand;
 
 /**
  * Help command to inform user how to use the plugin
  */
-public class CommandHelp extends BaseCommand {
+public class CommandHelp implements IBaseCommand {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

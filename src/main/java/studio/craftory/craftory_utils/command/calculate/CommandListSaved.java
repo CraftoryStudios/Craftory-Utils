@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.CalculateManager;
+import studio.craftory.craftory_utils.Constants.Permissions;
 import studio.craftory.craftory_utils.Utils;
 
 /**
@@ -29,7 +30,7 @@ public class CommandListSaved extends ManagedCommand {
       name = sender.getName();
     }
     if (args.length == 2 && Utils.getOnlinePlayerNames().contains(args[1])) {
-      if (!sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")) {
+      if (!sender.hasPermission(Permissions.MANAGE_PLAYER_LOCATIONS)) {
         return Utils.noPerms(sender);
       }
       name = args[1];
@@ -72,7 +73,7 @@ public class CommandListSaved extends ManagedCommand {
   public List<String> onTabComplete(CommandSender sender, Command command, String alias,
       String[] args) {
     ArrayList<String> tabs = new ArrayList<>();
-    if (!sender.hasPermission("craftory-utils.calculate.managePlayersSavedLocations")) {
+    if (!sender.hasPermission(Permissions.MANAGE_PLAYER_LOCATIONS)) {
       return tabs;
     }
     if (args.length == 1) {

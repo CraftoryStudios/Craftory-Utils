@@ -9,12 +9,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Utils;
-import studio.craftory.craftory_utils.command.BaseCommand;
+import studio.craftory.craftory_utils.command.IBaseCommand;
 
 /**
  * Calculated the centre of a list of points
  */
-public class CommandCentre extends BaseCommand {
+public class CommandCentre implements IBaseCommand {
 
   private final CalculateManager calculateManager;
 

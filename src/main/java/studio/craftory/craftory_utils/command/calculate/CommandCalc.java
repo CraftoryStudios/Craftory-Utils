@@ -10,9 +10,9 @@ import javax.script.ScriptEngineManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import studio.craftory.craftory_utils.Utils;
-import studio.craftory.craftory_utils.command.BaseCommand;
+import studio.craftory.craftory_utils.command.IBaseCommand;
 
-public class CommandCalc extends BaseCommand {
+public class CommandCalc implements IBaseCommand {
 
   private static final ScriptEngine engine = new ScriptEngineManager()
       .getEngineByName("nashorn"); // Efficient Java Script engine
