@@ -3,17 +3,16 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.Collections;
 import java.util.List;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.craftory.craftory_utils.CraftoryUtils;
 import studio.craftory.craftory_utils.Utils;
+import studio.craftory.craftory_utils.command.BaseCommand;
 
 /**
  * Command for simply typing calculate or any of the aliases
  */
-public class CommandMain implements CommandExecutor, TabCompleter {
+public class CommandMain extends BaseCommand {
 
 
   private static final String VERSION = JavaPlugin.getPlugin(CraftoryUtils.class).getVersion();

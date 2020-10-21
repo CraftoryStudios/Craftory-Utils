@@ -6,16 +6,15 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.Utils;
+import studio.craftory.craftory_utils.command.BaseCommand;
 
 /**
  * Calculates the distance between two points in x,y,z space
  */
-public class CommandDistance implements CommandExecutor, TabCompleter {
+public class CommandDistance extends BaseCommand {
 
   protected static boolean calculateDistance(CommandSender sender, String[] args, boolean ignoreY) {
     World world = Utils.getWorld(sender);

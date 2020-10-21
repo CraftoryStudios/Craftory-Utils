@@ -6,16 +6,15 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Utils;
+import studio.craftory.craftory_utils.command.BaseCommand;
 
 /**
  * Calculated the centre of a list of points
  */
-public class CommandCentre implements CommandExecutor, TabCompleter {
+public class CommandCentre extends BaseCommand {
 
   private final CalculateManager calculateManager;
 

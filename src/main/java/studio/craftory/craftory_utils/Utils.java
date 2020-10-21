@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -160,10 +161,10 @@ public class Utils {
       return list;
     }
     Iterator<String> iter = list.iterator();
-    String label = origArgs[origArgs.length - 1].toLowerCase();
+    String label = origArgs[origArgs.length - 1].toLowerCase(Locale.ROOT);
     while (iter.hasNext()) {
       String name = iter.next();
-      if (!name.toLowerCase().startsWith(label)) {
+      if (!name.toLowerCase(Locale.ROOT).startsWith(label)) {
         iter.remove();
       }
     }

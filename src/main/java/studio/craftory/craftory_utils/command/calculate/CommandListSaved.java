@@ -7,9 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Utils;
@@ -17,12 +15,11 @@ import studio.craftory.craftory_utils.Utils;
 /**
  * Lists a players saved locations
  */
-public class CommandListSaved implements CommandExecutor, TabCompleter {
+public class CommandListSaved extends ManagedCommand {
 
-  private final CalculateManager calculateManager;
 
   public CommandListSaved(CalculateManager calculateManager) {
-    this.calculateManager = calculateManager;
+    super(calculateManager);
   }
 
   @Override

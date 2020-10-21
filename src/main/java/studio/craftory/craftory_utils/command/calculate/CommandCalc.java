@@ -3,16 +3,16 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.Utils;
+import studio.craftory.craftory_utils.command.BaseCommand;
 
-public class CommandCalc implements CommandExecutor, TabCompleter {
+public class CommandCalc extends BaseCommand {
 
   private static final ScriptEngine engine = new ScriptEngineManager()
       .getEngineByName("nashorn"); // Efficient Java Script engine
@@ -103,7 +103,7 @@ public class CommandCalc implements CommandExecutor, TabCompleter {
   private String formatExpression(String expression) {
     return jsFunctions.entrySet()
                       .stream()
-                      .reduce(expression.toLowerCase(),
+                      .reduce(expression.toLowerCase(Locale.ROOT),
                           (s, e) -> s.replace(e.getKey(), e.getValue()),
                           (s1, s2) -> null);
   }

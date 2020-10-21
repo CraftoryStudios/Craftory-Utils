@@ -3,15 +3,14 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.Utils;
+import studio.craftory.craftory_utils.command.BaseCommand;
 
 /**
  * Help command to inform user how to use the plugin
  */
-public class CommandHelp implements CommandExecutor, TabCompleter {
+public class CommandHelp extends BaseCommand {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

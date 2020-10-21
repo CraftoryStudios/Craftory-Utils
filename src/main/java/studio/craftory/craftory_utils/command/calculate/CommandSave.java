@@ -5,21 +5,18 @@ import java.util.List;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Utils;
 
-public class CommandSave implements CommandExecutor, TabCompleter {
+public class CommandSave extends ManagedCommand {
 
   private static final String LAST_CALCULATED = "<prev>";
 
-  private final CalculateManager calculateManager;
 
   public CommandSave(CalculateManager calculateManager) {
-    this.calculateManager = calculateManager;
+    super(calculateManager);
   }
 
   @Override

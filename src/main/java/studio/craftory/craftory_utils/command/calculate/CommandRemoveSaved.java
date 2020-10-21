@@ -3,21 +3,16 @@ package studio.craftory.craftory_utils.command.calculate;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import studio.craftory.craftory_utils.CalculateManager;
 import studio.craftory.craftory_utils.Constants.Permissions;
 import studio.craftory.craftory_utils.Utils;
 
-public class CommandRemoveSaved implements CommandExecutor, TabCompleter {
-
-  private final CalculateManager calculateManager;
+public class CommandRemoveSaved extends ManagedCommand {
 
   public CommandRemoveSaved(CalculateManager calculateManager) {
-    this.calculateManager = calculateManager;
+    super(calculateManager);
   }
-
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
