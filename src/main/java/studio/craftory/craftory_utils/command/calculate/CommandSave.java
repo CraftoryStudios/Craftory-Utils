@@ -22,11 +22,11 @@ public class CommandSave extends ManagedCommand {
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (!sender.hasPermission("craftory-utils.calculate.saveLocations")) {
+    if (!sender.hasPermission(Permissions.SAVE_LOCATIONS)) {
       return Utils.noPerms(sender);
     }
     boolean hasPlayerLocationPermission = sender
-        .hasPermission("craftory-utils.calculate.usePlayerLocations");
+        .hasPermission(Permissions.USE_PLAYER_LOCATIONS);
     UUID id = Utils.getID(sender);
     Location location = null;
     if (args.length < 2) {
